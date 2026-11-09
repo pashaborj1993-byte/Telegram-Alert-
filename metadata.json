@@ -1,0 +1,6 @@
+{
+  "name": "TeleAlert - Telegram Keyword Monitor & Instant Alerts",
+  "description": "Real-time Telegram channel keyword tracking and instant alert dispatcher for Email, WhatsApp, and mobile push notifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

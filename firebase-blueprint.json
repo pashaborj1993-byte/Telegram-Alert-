@@ -1,0 +1,112 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastLoginAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "UserChannel": {
+      "title": "UserChannel",
+      "description": "A Telegram channel followed by the user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "subscribers": { "type": "string" },
+        "webUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "paused", "error"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "username"]
+    },
+    "UserRule": {
+      "title": "UserRule",
+      "description": "A keyword alert rule configured by the user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "keywords": { "type": "array" },
+        "excludedKeywords": { "type": "array" },
+        "channelIds": { "type": "array" },
+        "priority": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+        "notifyEmail": { "type": "boolean" },
+        "notifyWhatsApp": { "type": "boolean" },
+        "notifyInApp": { "type": "boolean" },
+        "enabled": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "keywords"]
+    },
+    "UserAlert": {
+      "title": "UserAlert",
+      "description": "A personal alert item matching the user rules",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "channel": { "type": "string" },
+        "ruleName": { "type": "string" },
+        "matchedKeywords": { "type": "array" },
+        "priority": { "type": "string" },
+        "postSnippet": { "type": "string" },
+        "postUrl": { "type": "string" },
+        "emailStatus": { "type": "string" },
+        "emailRecipient": { "type": "string" },
+        "read": { "type": "boolean" }
+      },
+      "required": ["id", "userId", "channel", "postSnippet"]
+    },
+    "UserSettings": {
+      "title": "UserSettings",
+      "description": "Per-user configuration settings",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "language": { "type": "string", "enum": ["fa", "en"] },
+        "notificationSchedule": { "type": "string", "enum": ["hourly", "immediate", "both"] },
+        "emailRecipient": { "type": "string" },
+        "whatsAppRecipientPhone": { "type": "string" },
+        "soundEnabled": { "type": "boolean" },
+        "desktopNotifications": { "type": "boolean" }
+      },
+      "required": ["userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile document accessible only to owner"
+    },
+    "/users/{userId}/settings/{settingId}": {
+      "schema": "UserSettings",
+      "description": "Per-user settings"
+    },
+    "/users/{userId}/channels/{channelId}": {
+      "schema": "UserChannel",
+      "description": "User specific tracked telegram channels"
+    },
+    "/users/{userId}/rules/{ruleId}": {
+      "schema": "UserRule",
+      "description": "User specific keyword rules"
+    },
+    "/users/{userId}/alerts/{alertId}": {
+      "schema": "UserAlert",
+      "description": "User personal alerts and bulletin log"
+    }
+  }
+}
